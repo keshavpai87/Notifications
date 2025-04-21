@@ -15,8 +15,6 @@ import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
 
-
-
     private val channelID = "com.example.notificationsdemo.channel1"
     private var notificationManager :  NotificationManager?  = null
 
@@ -52,6 +50,38 @@ class MainActivity : AppCompatActivity() {
             this, 0, tapResultIntent, PendingIntent.FLAG_MUTABLE
         )
 
+        // Action Button 1
+        val tapResultIntent2 = Intent(this, DetailsActivity::class.java)
+        val pendingIntent2 : PendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            tapResultIntent2,
+            PendingIntent.FLAG_MUTABLE
+        )
+
+        val action2 : NotificationCompat.Action = NotificationCompat.Action.Builder(
+            0,
+            "Details",
+            pendingIntent2)
+            .build()
+
+        
+        // Action Button 2
+        val tapResultIntent3 = Intent(this, SettingsActivity::class.java)
+        val pendingIntent3 : PendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            tapResultIntent3,
+            PendingIntent.FLAG_MUTABLE
+        )
+
+        val action3 : NotificationCompat.Action = NotificationCompat.Action.Builder(
+            0,
+            "Settings",
+            pendingIntent3)
+            .build()
+
+
         val notification = NotificationCompat.Builder(this@MainActivity, channelID)
             .setContentTitle("Demo Title")
             .setContentText("This is Demo Notification")
@@ -59,6 +89,8 @@ class MainActivity : AppCompatActivity() {
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
+            .addAction(action2)
+            .addAction(action3)
             .build()
         notificationManager?.notify(notificationId, notification)
     }
