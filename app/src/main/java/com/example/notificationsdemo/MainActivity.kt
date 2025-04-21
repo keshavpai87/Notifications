@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         /*val channel = NotificationChannel(id, name, importance)
         channel.description = channelDescription*/
 
+        // The Kotlin Way
         val channel = NotificationChannel(id, name, importance).apply {
             description = channelDescription
         }
