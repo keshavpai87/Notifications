@@ -10,6 +10,7 @@ import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.app.RemoteInput
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private val channelID = "com.example.notificationsdemo.channel1"
     private var notificationManager :  NotificationManager?  = null
-
+    private val KEY_REPLY = "key_reply"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +50,18 @@ class MainActivity : AppCompatActivity() {
         val pendingIntent : PendingIntent = PendingIntent.getActivity(
             this, 0, tapResultIntent, PendingIntent.FLAG_MUTABLE
         )
+
+        // Reply Action
+        val remoteInput : RemoteInput = RemoteInput.Builder(KEY_REPLY).run {
+            setLabel("Insert your name here")
+            build()
+        }
+
+        val replyAction : NotificationCompat.Action = NotificationCompat.Action.Builder(
+            0,
+            "Reply",
+            pendingIntent
+        ).addRemoteInput(remoteInput).build()
 
         // Action Button 1
         val tapResultIntent2 = Intent(this, DetailsActivity::class.java)
@@ -88,9 +101,11 @@ class MainActivity : AppCompatActivity() {
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentIntent(pendingIntent)
+            // For Tap Action
+//            .setContentIntent(pendingIntent)
             .addAction(action2)
             .addAction(action3)
+            .addAction(replyAction)
             .build()
         notificationManager?.notify(notificationId, notification)
     }
